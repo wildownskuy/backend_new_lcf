@@ -27,7 +27,7 @@ class PostController extends Controller
     public function index()
     {
         //get all posts
-        $posts = Post::all();
+        $posts = Post::latest()->get();
 
         //return collection of posts as a resource
         return new PostResource(true, 'List Data Posts', $posts);
