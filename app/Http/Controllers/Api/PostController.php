@@ -47,6 +47,7 @@ class PostController extends Controller
             'title'     => 'required',
             'content'   => 'required',
             'location'   => 'required',
+            'category'   => 'required',
         ]);
 
         //check if validation fails
@@ -64,6 +65,7 @@ class PostController extends Controller
             'title'     => $request->title,
             'content'   => $request->content,
             'location'   => $request->location,
+            'category'   => $request->category,
         ]);
 
         //return response
@@ -99,6 +101,7 @@ class PostController extends Controller
             'title'     => 'required',
             'content'   => 'required',
             'location'  => 'required',
+            'category'  => 'required',
         ]);
 
         //check if validation fails
@@ -125,6 +128,7 @@ class PostController extends Controller
                 'title'     => $request->title,
                 'content'   => $request->content,
                 'location'   => $request->location,
+                'category'   => $request->category,
             ]);
 
         } else {
@@ -134,6 +138,7 @@ class PostController extends Controller
                 'title'     => $request->title,
                 'content'   => $request->content,
                 'location'   => $request->location,
+                'category'   => $request->category,
             ]);
         }
 

@@ -20,6 +20,7 @@ class Post extends Model
         'title',
         'content',
         'location',
+        'category',
     ];
 
     /**

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('location');
+            $table->string('category');
             $table->timestamps();
         });
     }
