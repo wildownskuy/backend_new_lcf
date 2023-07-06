@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Dokter extends Model
 {
     use HasFactory;
 
@@ -17,10 +17,9 @@ class Post extends Model
      */
     protected $fillable = [
         'image',
-        'title',
-        'content',
-        'location',
-        'category',
+        'name',
+        'role',
+        'instagram',
     ];
 
     /**
@@ -31,7 +30,7 @@ class Post extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($image) => asset('/storage/posts/' . $image),
+            get: fn ($image) => asset('/storage/dokters/' . $image),
         );
     }
 }

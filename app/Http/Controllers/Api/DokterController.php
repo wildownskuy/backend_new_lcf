@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-//import Model "Post"
-use App\Models\Post;
-
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-//import Resource "PostResource"
 use App\Http\Resources\PostResource;
-
-//import Facade "Storage"
+use App\Models\Dokter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
-//import Facade "Validator"
 use Illuminate\Support\Facades\Validator;
 
-class PostController extends Controller
+class DokterController extends Controller
 {
     /**
      * index
@@ -26,11 +18,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //get all posts
-        $posts = Post::latest()->get();
+        //get all dokters
+        $dokters = Dokter::latest()->get();
 
-        //return collection of posts as a resource
-        return new PostResource(true, 'List Data Posts', $posts);
+        //return collection of dokters as a resource
+        return new PostResource(true, 'List Data Dokter', $dokters);
     }
 
     /**
@@ -44,10 +36,9 @@ class PostController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             'image'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'title'     => 'required',
-            'content'   => 'required',
-            'location'   => 'required',
-            'category'   => 'required',
+            'name'     => 'required',
+            'role'   => 'required',
+            'instagram'   => 'required',
         ]);
 
         //check if validation fails
@@ -57,19 +48,18 @@ class PostController extends Controller
 
         //upload image
         $image = $request->file('image');
-        $image->storeAs('public/posts', $image->hashName());
+        $image->storeAs('public/dokters', $image->hashName());
 
         //create post
-        $post = Post::create([
+        $dokters = Dokter::create([
             'image'     => $image->hashName(),
-            'title'     => $request->title,
-            'content'   => $request->content,
-            'location'   => $request->location,
-            'category'   => $request->category,
+            'name'     => $request->name,
+            'role'   => $request->role,
+            'instagram'   => $request->instagram,
         ]);
 
         //return response
-        return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
+        return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $dokters);
     }
 
     /**
@@ -81,10 +71,10 @@ class PostController extends Controller
     public function show($id)
     {
         //find post by ID
-        $post = Post::find($id);
+        $dokters = Dokter::find($id);
 
         //return single post as a resource
-        return new PostResource(true, 'Detail Data Post!', $post);
+        return new PostResource(true, 'Detail Data Layanan!', $dokters);
     }
 
     /**
@@ -98,10 +88,9 @@ class PostController extends Controller
     {
         //define validation rules
         $validator = Validator::make($request->all(), [
-            'title'     => 'required',
-            'content'   => 'required',
-            'location'  => 'required',
-            'category'  => 'required',
+            'name'     => 'required',
+            'role'   => 'required',
+            'instagram'  => 'required',
         ]);
 
         //check if validation fails
@@ -110,40 +99,39 @@ class PostController extends Controller
         }
 
         //find post by ID
-        $post = Post::find($id);
+        $dokters = Dokter::find($id);
 
         //check if image is not empty
         if ($request->hasFile('image')) {
 
             //upload image
             $image = $request->file('image');
-            $image->storeAs('public/posts', $image->hashName());
+            $image->storeAs('public/dokters', $image->hashName());
 
             //delete old image
-            Storage::delete('public/posts/'.$post->image);
+            Storage::delete('public/dokters/'.$dokters->image);
 
             //update post with new image
-            $post->update([
+            $dokters->update([
                 'image'     => $image->hashName(),
-                'title'     => $request->title,
-                'content'   => $request->content,
-                'location'   => $request->location,
-                'category'   => $request->category,
+                'name'     => $request->name,
+                'role'   => $request->role,
+                'instagram'   => $request->instagram,
             ]);
 
         } else {
 
             //update post without image
-            $post->update([
-                'title'     => $request->title,
-                'content'   => $request->content,
-                'location'   => $request->location,
+            $dokters->update([
+                'name'     => $request->name,
+                'role'   => $request->role,
+                'instagram'   => $request->instagram,
                 'category'   => $request->category,
             ]);
         }
 
         //return response
-        return new PostResource(true, 'Data Post Berhasil Diubah!', $post);
+        return new PostResource(true, 'Data Layanan Berhasil Diubah!', $dokters);
     }
 
     /**
@@ -156,15 +144,15 @@ class PostController extends Controller
     {
 
         //find post by ID
-        $post = Post::find($id);
+        $dokters = Dokter::find($id);
 
         //delete image
-        Storage::delete('public/posts/'.$post->image);
+        Storage::delete('public/dokters/'.$dokters->image);
 
         //delete post
-        $post->delete();
+        $dokters->delete();
 
         //return response
-        return new PostResource(true, 'Data Post Berhasil Dihapus!', null);
+        return new PostResource(true, 'Data Layanan Berhasil Dihapus!', null);
     }
 }
